@@ -648,6 +648,7 @@ class SentinelAPI:
         lta_retry_delay=None,
         fail_fast=False,
         nodefilter=None,
+        prodlist=None,
     ):
         """Download a list of products.
 
@@ -712,7 +713,7 @@ class SentinelAPI:
         if lta_retry_delay:
             downloader.lta_retry_delay = lta_retry_delay
         downloader.node_filter = nodefilter
-        statuses, exceptions, product_infos = downloader.download_all(products, directory_path)
+        statuses, exceptions, product_infos = downloader.download_all(products, directory_path,prodlist=prodlist)
 
         # Adapt results to the old download_all() API
         downloaded_prods = {}

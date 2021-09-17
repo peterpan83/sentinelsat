@@ -231,7 +231,7 @@ class Downloader:
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory="."):
+    def download_all(self, products, directory=".",prodlist=None):
         """Download a list of products.
 
         Parameters
@@ -275,6 +275,7 @@ class Downloader:
         # Although the download method also checks, we do not need to retrieve such
         # products from the LTA and use up our quota.
         self._skip_existing_products(directory, offline_prods, product_infos, statuses)
+        self._skip_unwanted_products(directory, offline_prods, product_infos, statuses,prodlist=prodlist)
 
         stop_event = threading.Event()
         dl_tasks = {}
@@ -430,6 +431,20 @@ class Downloader:
                     product_info["title"],
                     pid,
                 )
+    def _skip_unwanted_products(self,directory, products, product_infos, statuses,prodlist):
+        import pandas as pd
+        prods = pd.read_csv(prodlist)['Name'].values
+        for pid in list(products):
+            product_info = product_infos[pid]
+            filename = self.api._get_filename(product_info)
+            if filename not in prods:
+                products.remove(pid)
+                self.logger.info(                    "%s (%s) is not needed.",
+                    product_info["title"],
+                    pid,)
+
+
+
 
     def trigger_offline_retrieval(self, uuid):
         """Triggers retrieval of an offline product.
