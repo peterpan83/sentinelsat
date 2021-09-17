@@ -433,7 +433,10 @@ class Downloader:
                 )
     def _skip_unwanted_products(self,directory, products, product_infos, statuses,prodlist):
         import pandas as pd
-        prods = pd.read_csv(prodlist)['Name'].values
+        if prodlist is not None:
+            prods = pd.read_csv(prodlist)['Name'].values
+        else:
+            return
         for pid in list(products):
             product_info = product_infos[pid]
             filename = self.api._get_filename(product_info)

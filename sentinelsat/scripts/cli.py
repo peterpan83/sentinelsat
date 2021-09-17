@@ -392,7 +392,7 @@ def cli(
 
     if download:
         downloaded, triggered, failed_downloads = api.download_all(
-            products, path, nodefilter=nodefilter, fail_fast=fail_fast
+            products, path, nodefilter=nodefilter, fail_fast=fail_fast,prodlist=prodlist
         )
         retcode = 0
         if len(failed_downloads) > 0:
