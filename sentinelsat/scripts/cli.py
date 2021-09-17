@@ -209,6 +209,16 @@ def validate_query_param(ctx, param, kwargs):
     relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
     """,
 )
+
+@click.option(
+    "--prodlist",
+    default = None,
+    help="""
+    a txt file contians all the S2 product names that are wanted to download
+    """,
+    type=click.File(mode='r'),
+)
+
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -240,6 +250,7 @@ def cli(
     gnss,
     fmt,
     info,
+    prodlist,
 ):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
